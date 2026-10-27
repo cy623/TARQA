@@ -1,0 +1,48 @@
+{
+  "domain": "financial",
+  "release": "qa_support10_v1",
+  "seed": 42,
+  "qa_split_ratios": {
+    "train": 0.6,
+    "validation": 0.2,
+    "test": 0.2
+  },
+  "support_target_per_question": 10,
+  "support_reference_times": {
+    "train": [
+      "1994-01-01 00:00:00",
+      "1994-04-01 00:00:00",
+      "1994-07-01 00:00:00",
+      "1994-10-01 00:00:00"
+    ],
+    "validation": [
+      "1995-12-31 00:00:00"
+    ],
+    "test": [
+      "1996-07-01 00:00:00",
+      "1996-08-01 00:00:00",
+      "1996-09-01 00:00:00",
+      "1996-10-01 00:00:00",
+      "1996-11-01 00:00:00",
+      "1996-12-01 00:00:00",
+      "1997-01-01 00:00:00"
+    ]
+  },
+  "support_label_cutoffs": {
+    "train": "1995-12-31 00:00:00",
+    "validation": "1997-01-01 00:00:00",
+    "test": "1999-01-01 00:00:00"
+  },
+  "original_prediction_reference_time": "1997-01-01 00:00:00",
+  "snapshot_observation_cutoff": "1999-01-01 00:00:00",
+  "minimum_observed_transactions": 1,
+  "feature_policy": "DATE-valued events are conservatively visible only from the next day's midnight; at reference-time midnight, feature dates must be strictly earlier than the reference date.",
+  "label_policy": "Keep each parent's SQL DATE window (reference_date, reference_date + source offset]; its complete label is available at the day after the inclusive end date. Keep exact thresholds, types, roles and source SQL empty-set behavior.",
+  "sampling_policy": "Per-parent deterministic hash ranking of real account/reference-time pairs; account already open and at least one historical transaction; card-holding wording additionally requires a historically visible card. Deduplicate bound SQL globally before labels; no outcome balancing or resampling.",
+  "head_training_policy": "Train on support/train, select on support/validation, and keep original qa/test as the current main test. Revised support/test is reserved for separate final evaluation, never per-query adaptation.",
+  "support_test_usage": "evaluation_only",
+  "support_test_temporal_release": "support_test_strict_future_evaluation_v1",
+  "support_test_reference_time_min": "1996-06-29 00:00:00",
+  "support_test_allow_missing_parents": false,
+  "test_support_policy": "Final temporal evaluation instances only; not adaptation data. Existing qa/test remains the current experiment cohort."
+}

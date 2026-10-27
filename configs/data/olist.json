@@ -1,0 +1,55 @@
+{
+  "domain": "olist",
+  "seed": 42,
+  "qa_split_ratios": {
+    "train": 0.6,
+    "validation": 0.2,
+    "test": 0.2
+  },
+  "support_candidates_per_question": 10,
+  "minimum_usable_support_per_question": 1,
+  "support_reference_times": {
+    "train": [
+      "2017-05-06 00:00:00",
+      "2017-06-05 00:00:00",
+      "2017-07-05 00:00:00",
+      "2017-08-04 00:00:00",
+      "2017-09-03 00:00:00",
+      "2017-10-03 00:00:00",
+      "2017-11-02 00:00:00",
+      "2017-12-02 00:00:00"
+    ],
+    "validation": [
+      "2018-01-01 00:00:00"
+    ],
+    "test": [
+      "2018-04-16 00:00:00",
+      "2018-05-01 00:00:00",
+      "2018-06-01 00:00:00",
+      "2018-07-01 00:00:00"
+    ]
+  },
+  "support_label_cutoffs": {
+    "train": "2018-01-01 00:00:00",
+    "validation": "2018-05-01 00:00:00",
+    "test": "2018-11-01 00:00:00"
+  },
+  "original_prediction_reference_time": "2018-05-01 00:00:00",
+  "candidate_policy": "Choose existing, historically observed entities before executing labels; ten distinct entities per parent question; no label balancing and no replacement after censoring.",
+  "feature_cutoff_operator": "<=",
+  "label_lower_operator": ">",
+  "label_upper_operator": "<=",
+  "original_qa_split_kind": "grouped stratified question split, not a chronological split of original prediction labels",
+  "prediction_training_policy": "Train on support/train, select on support/validation, and keep original qa/test as the current main test. Revised support/test is reserved for separate final evaluation, never per-query adaptation.",
+  "test_support_policy": "Final temporal evaluation instances only; not adaptation data. Existing qa/test remains the current experiment cohort.",
+  "snapshot_assumptions": [
+    "Rows and labels are verified against the supplied database snapshot; independent event ingestion histories are unavailable.",
+    "Order items and payments inherit their parent order purchase time for historical visibility.",
+    "Review creation determines the target window; review answer time is also required for label availability.",
+    "Unversioned entity attributes are snapshot attributes; the historical view suppresses final order status and future actual lifecycle dates but cannot reconstruct unrecorded attribute revisions."
+  ],
+  "support_test_usage": "evaluation_only",
+  "support_test_temporal_release": "support_test_strict_future_evaluation_v1",
+  "support_test_reference_time_min": "2018-04-11 14:34:59",
+  "support_test_allow_missing_parents": false
+}

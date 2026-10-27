@@ -1,0 +1,21 @@
+# TARQA core dependencies, pinned to the existing rdl_bench environment.
+# The verified PyTorch build is 2.5.1+cu121; the CUDA build is hardware-dependent.
+# Install from the repository root: python -m pip install -r requirements.txt
+# This file does not require pyproject.toml, setup.py, or an editable install.
+numpy==2.2.6
+pandas==2.3.3
+scikit-learn==1.7.2
+torch==2.5.1
+PyYAML==6.0.3
+pydantic==2.13.4
+joblib==1.5.3
+duckdb==1.4.4
+sqlglot==30.18.0
+transformers==4.48.3
+datasets==3.2.0
+peft==0.14.0
+accelerate==1.3.0
+safetensors==0.7.0
+sentence-transformers==3.4.1
+bitsandbytes==0.49.2
+tqdm==4.67.3

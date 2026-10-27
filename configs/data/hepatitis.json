@@ -1,0 +1,15 @@
+{
+  "domain": "hepatitis",
+  "release": "qa_v1",
+  "seed": 42,
+  "qa_split_ratios": {
+    "train": 0.6,
+    "validation": 0.2,
+    "test": 0.2
+  },
+  "has_prediction_tasks": false,
+  "generate_support": false,
+  "split_policy": "Group exact normalized SQL and exact primary/variant text; approximately stratify by query_type and answer_nature; keep every original QA object unchanged.",
+  "reference_time_policy": "No prediction tasks; retain source records without adding reference_time.",
+  "validation_scope": "Source structure, declared table names, duplicate grouping, partition coverage and JSON object fidelity; original SQL answers and clinical coding meanings are not re-audited."
+}

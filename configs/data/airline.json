@@ -1,0 +1,46 @@
+{
+  "domain": "airline",
+  "release": "qa_support10_v1",
+  "seed": 42,
+  "qa_split_ratios": {
+    "train": 0.6,
+    "validation": 0.2,
+    "test": 0.2
+  },
+  "support_target_per_question": 10,
+  "support_reference_times": {
+    "train": [
+      "2016-01-04 00:00:00"
+    ],
+    "validation": [
+      "2016-01-14 00:00:00"
+    ],
+    "test": [
+      "2016-01-24 00:00:00"
+    ]
+  },
+  "support_label_cutoffs": {
+    "train": "2016-01-14 00:00:00",
+    "validation": "2016-01-24 00:00:00",
+    "test": "2016-02-03 00:00:00"
+  },
+  "original_prediction_reference_time": "2016-01-24 00:00:00",
+  "snapshot_observation_cutoff": "2016-02-03 00:00:00",
+  "event_availability_lag_days": 3,
+  "completion_clock_buffer_minutes": 1440,
+  "minimum_observed_flight_records": 1,
+  "feature_policy": "Operational event-time replay assumption: flight records are available at flightdate + 3 days. At a reference midnight, use flightdate <= reference_date - 3 days. This is not a reconstruction of historical BTS public-release availability.",
+  "label_policy": "Keep each original SQL window (reference_date, reference_date+7 days] and all original NULL, aggregation and threshold semantics. Full-window label availability is inclusive end date + 3 days under the operational replay assumption.",
+  "sampling_policy": "Rank real historical entity/reference pairs per original question; allocate one unused bound-SQL unit per parent per round, up to 10 rounds. Parent order and candidate order are hashed with seed 42. Allocate before labels; no outcome balancing or replacement after rejection.",
+  "head_training_policy": "Train on support/train, select on support/validation, and keep original qa/test as the current main test. Revised support/test is reserved for separate final evaluation, never per-query adaptation.",
+  "premise_rules": {
+    "RDB_FIN_952": "Require at least one historically visible flight with distance >= 2500 miles, consistent with the dataset's stated long-haul definition.",
+    "RDB_FIN_999": "Keep original ATL anchor to preserve the major-hub premise without inventing a hub category for other airports; only shift time."
+  },
+  "timing_limitations": "Known noncancelled flight completion durations fit inside the 3-day lag even after adding a 24-hour clock buffer. Cancellation/unfinished-diversion resolution, delay-cause reporting, correction histories and actual monthly publication times are not timestamped; their availability within this lag is an explicit assumption.",
+  "support_test_usage": "evaluation_only",
+  "support_test_temporal_release": "support_test_strict_future_evaluation_v1",
+  "support_test_reference_time_min": "2016-01-24 00:00:00",
+  "support_test_allow_missing_parents": false,
+  "test_support_policy": "Final temporal evaluation instances only; not adaptation data. Existing qa/test remains the current experiment cohort."
+}

@@ -1,0 +1,61 @@
+model:
+  model_path: SET_BY_SETUP
+  tokenizer_path: SET_BY_SETUP
+  trust_remote_code: false
+  local_files_only: true
+  load_in_4bit: true
+  torch_dtype: bfloat16
+  max_length: 8192
+  gradient_checkpointing: true
+lora:
+  r: 32
+  alpha: 64
+  dropout: 0.05
+  target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+training:
+  output_root: work/tsg/llama8b
+  epochs: 3
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 16
+  logging_steps: 10
+  eval_steps: 200
+  save_steps: 200
+  save_total_limit: 2
+  bf16: true
+  fp16: false
+  seed: 42
+  generation_strategy: track_last
+  anonymize_schema: true
+  train_shot_choices:
+  - 0
+  - 2
+  - 4
+  validation_shots: 0
+  test_shots: 0
+  domain_balanced_sampling: true
+  paraphrase_consistency_weight: 0.0
+  max_new_tokens: 256
+  include_variants: false
+data:
+  dataset_root: work/dataset
+  db_root: work/dataset
+  processed_root: work/processed
+  domains:
+  - olist
+  - stats
+  - ncaa
+  - hepatitis
+  - financial
+  - dallas
+  - airline

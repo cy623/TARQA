@@ -1,0 +1,51 @@
+{
+  "domain": "ncaa",
+  "release": "qa_support10_balanced_diagnostic_v2",
+  "seed": 42,
+  "qa_split_ratios": {
+    "train": 0.6,
+    "validation": 0.2,
+    "test": 0.2
+  },
+  "support_target_per_question": 10,
+  "support_seasons": {
+    "train": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010
+    ],
+    "validation": [
+      2011,
+      2012
+    ],
+    "test": [
+      2013
+    ]
+  },
+  "stage_label_cutoff_seasons": {
+    "train": 2011,
+    "validation": 2013,
+    "test": 2014
+  },
+  "minimum_observed_regular_games": 15,
+  "original_season": 2014,
+  "reference_policy": "Source observation-day wording is normalized at runtime to the next-day midnight. Raw QA stays unchanged; qa_reference_times.json and load_data.py provide the canonical model reference time.",
+  "event_availability_policy": "Game on day d is assumed available at dayzero + d + 1 days; historical inputs include availability <= reference_time. No source publication timestamps exist.",
+  "sampling_policy": "Seed-42 hash partition of real anchor IDs across QA/support splits; historical eligibility; approximately balanced SQL-defined outcome strata; spread anchors/seasons/numeric values; no repeated bound SQL; record scarce strata and never fabricate/replace undefined results with zero.",
+  "qualifier_policy": "Preserve primary wording and replace only team identity, season and explicit calendar dates. Exclude unverified factual premises, nontransferable round equivalences and fixed-day SQL misdescribed as chronological first game.",
+  "head_training_policy": "Train on support/train, select on support/validation, and keep original qa/test as the current main test. Revised support/test is reserved for separate final evaluation, never per-query adaptation.",
+  "support_count_policy": "Up to ten per parent. If a classification role exceeds 60/40 after real candidate selection, downsample the majority toward 50/50 while retaining five examples per parent where available; see audit/downsampled_support.json.",
+  "qa_split_policy": "Preserve question IDs and original split membership; replace prediction anchors, canonical wording and actual SQL labels. Nonprediction QA unchanged. Anchor IDs are disjoint across splits; this is not an unseen-template split.",
+  "original_qa_prediction_policy": "Outcome-stratified diagnostic evaluation, not natural-population prevalence. Rebuilt prediction paraphrase lists are empty to avoid stale entity/season aliases.",
+  "comparison_policy": "Rebuild this domain 05 and affected 01. Retrain holdouts that use this domain as source, then rerun target 07. Existing models/results retain old provenance; unchanged reasoning QA is reusable.",
+  "support_test_usage": "evaluation_only",
+  "support_test_temporal_release": "support_test_strict_future_evaluation_v1",
+  "support_test_reference_time_min": "2012-04-03 00:00:00",
+  "support_test_allow_missing_parents": false,
+  "test_support_policy": "Final temporal evaluation instances only; not adaptation data. Existing qa/test remains the current experiment cohort."
+}

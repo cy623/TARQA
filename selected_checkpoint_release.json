@@ -1,0 +1,76 @@
+{
+  "datasets": [
+    "olist",
+    "stats",
+    "financial"
+  ],
+  "backbones": [
+    "llama8b",
+    "qwen32b"
+  ],
+  "retained_seed": 42,
+  "n_tsg_adapters": 6,
+  "n_heads": 84,
+  "head_counts": {
+    "indomain": 12,
+    "crossdomain": 60,
+    "source": 12
+  },
+  "crossdomain_budgets": [
+    "few_1",
+    "few_3",
+    "few_5",
+    "few_10"
+  ],
+  "classification_threshold": 0.5,
+  "public_urls_pending": true,
+  "assets": [
+    {
+      "file": "tarqa-tsg-llama8b-holdout_olist.tar.gz",
+      "bytes": 314358489,
+      "sha256": "3dbcd38707c00aa81fad4cc4b8b48ce3adcaf5d887d004858ab810f6c980cd51"
+    },
+    {
+      "file": "tarqa-tsg-llama8b-holdout_stats.tar.gz",
+      "bytes": 314378563,
+      "sha256": "812611d5c3eb05858306a3637edf6a9f3cf57e7f7d43dcaaf12d0f88b0981b59"
+    },
+    {
+      "file": "tarqa-tsg-llama8b-holdout_financial.tar.gz",
+      "bytes": 314438380,
+      "sha256": "9652a3559ee40bd77f7c5c982c9f74b5bed49a763de01abb5d348496f246576b"
+    },
+    {
+      "file": "tarqa-tsg-qwen32b-holdout_olist.tar.gz",
+      "bytes": 996926887,
+      "sha256": "58fafbfd34e2d06a8f21ba172281094e2b61e5d279c540130b7f62989d31e20b"
+    },
+    {
+      "file": "tarqa-tsg-qwen32b-holdout_stats.tar.gz",
+      "bytes": 997278017,
+      "sha256": "b877c0e635ee27e6b25d824fbb7d02c74ee6c4a36af8681868df24c37be6411f"
+    },
+    {
+      "file": "tarqa-tsg-qwen32b-holdout_financial.tar.gz",
+      "bytes": 997551252,
+      "sha256": "e0232dd11719d2295f7e6f31bbc52a07fd6914e3957468d41c9125927589bc91"
+    },
+    {
+      "file": "tarqa-heads-protocols-olist-stats-financial-seed42.tar.gz",
+      "bytes": 208154053,
+      "sha256": "f454dca740972803f8c782bbc7fdc46875932eef408b791de33630337910ec1b"
+    },
+    {
+      "file": "rdl-bench-data-v2.tar.gz",
+      "bytes": 265940366,
+      "sha256": "e23ec33f72478d1834e3c50e0843f269a2f27e9555e9fc2f23e453b1c9c33998"
+    }
+  ],
+  "single_seed_std_available": false,
+  "original_experiments_modified": false,
+  "results_included": false,
+  "file_manifest_included": false,
+  "dataset_archive": "rdl-bench-data-v2.tar.gz",
+  "source_archive": "tarqa-source.zip",
+  "code_complete": true
+}
