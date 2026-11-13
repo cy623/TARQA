@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-"""TARQA public entry point; runs directly without pyproject.toml."""
 import argparse
 from copy import deepcopy
 import importlib.util
@@ -11,7 +10,7 @@ import sys
 os.environ.setdefault('PYTORCH_CUDA_ALLOC_CONF', 'expandable_segments:True')
 
 ROOT = Path(__file__).resolve().parent
-sys.path[:0] = [str(ROOT / 'src'), str(ROOT / 'baselines/src')]
+sys.path.insert(0, str(ROOT / 'src'))
 
 
 def main():
@@ -59,7 +58,6 @@ def main():
     p.add_argument('--limit', type=int, help='Partial check: at most N per output type and N Reasoning questions')
     for name in ('build-tsg-data','train-tsg','eval-tsg'):
         commands.add_parser(name, add_help=False, help='Forward arguments to the original TSG entry point')
-    # Preserve the original training entry points' own argument parsing/help.
     if len(sys.argv) > 1 and sys.argv[1] in ('build-tsg-data','train-tsg','eval-tsg'):
         names = {'build-tsg-data':'01_build_task_spec_data.py','train-tsg':'02_train_task_spec_lora.py',
                  'eval-tsg':'03_eval_task_spec.py'}
