@@ -1,4 +1,3 @@
-"""Score newly computed predictions; no bundled historical results are required."""
 from copy import deepcopy
 import gc
 from pathlib import Path
@@ -105,9 +104,9 @@ def evaluate_reasoning(configuration, runtime_root, backbone, output, dataset=No
     from tarqa.task_spec.serialization import serialize_schema
     from tarqa.reasoning.pipeline import ReasoningPipeline
     from tarqa.reasoning.executor import DuckDBReadOnlyExecutor
-    from tarqa.reasoning.resdsql.evaluation import same_rows
-    from tarqa_baselines.export import schema_ddl
-    from tarqa_baselines.reasoning_llm import LocalChatModel
+    from tarqa.eval.sql_scoring import same_rows
+    from tarqa.reasoning.schema import schema_ddl
+    from tarqa.reasoning.llm import LocalChatModel
     from tarqa.model import _SharedBaseChat, _SQLModel
     cfg = read_json(configuration); output = Path(output); domain = cfg['domain']
     (output / 'reasoning_metrics.json').unlink(missing_ok=True)
