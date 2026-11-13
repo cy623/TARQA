@@ -1,0 +1,30 @@
+{
+  "description": "Pinned runtime instructions, with the recorded DuckDB adaptation. Upstream hashes describe source files; those experiment scripts are not runtime dependencies.",
+  "upstream": {
+    "url": "https://github.com/MohammadrezaPourreza/Few-shot-NL2SQL-with-prompting",
+    "commit": "0474801616130413b024fd008b016a190684649e",
+    "license": "MIT",
+    "runtime_source": "DIN-SQL_BIRD.py",
+    "execution": "AST literal extraction only; never executes upstream API calls",
+    "files_sha256": {
+      "DIN-SQL_BIRD.py": "a6ab111053434dad60c40bbb50bfb7f49e57d0247b1b3c6c2b60904ee15a3394",
+      "DIN-SQL.py": "fa2092ab4c7c3f561e7d14a755c3d2d8b6e8745b031fe5bce9968cddd0962504",
+      "LICENSE.txt": "002c2696d92b5c8cf956c11072baa58eaf9f6ade995c031ea635c6a1ee342ad1",
+      "README.md": "cd33a71e4788f80f22f5ce59bf7209a6c904551902bb724ccf3556d5bec6195e"
+    }
+  },
+  "templates": {
+    "SYSTEM_SCHEMA_LINKING_TEMPLATE": "You are an agent designed to find the schema_links for generating SQL queries for each question based on the database schema and Foreign keys.\nHint helps you to fine the correct schema_links.",
+    "HUMAN_SCHEMA_LINKING_TEMPLATE": "For the given question, find the schema links between the question and the table.\nHint helps you to fine the correct schema_links.\n###\nDatabase schema:\n#\n{schema}\n\n{columns_descriptions}\n#\nQ: {question}\nHint: {hint}\nA: Let's think step by step. In the question , we are asked:",
+    "SYSTEM_CLASSIFICATION_TEMPLATE": "For the given question, classify it as EASY, NON-NESTED, or NESTED based on nested queries and JOIN.\nif need nested queries: predict NESTED\nelif need JOIN and don't need nested queries: predict NON-NESTED\nelif don't need JOIN and don't need nested queries: predict EASY\nNote: Don't mistake the WHERE conditions with nested queries.\nNote: Only predict NESTED if the question needs nested queries, if it can be solved with JOIN, predict NON-NESTED.",
+    "HUMAN_CLASSIFICATION_TEMPLATE": "For the given question, classify it as EASY, NON-NESTED, or NESTED based on nested queries and JOIN.\nif need nested queries: predict NESTED\nelif need JOIN and don't need nested queries: predict NON-NESTED\nelif don't need JOIN and don't need nested queries: predict EASY\n###\nDatabase schema:\n#\n{schema}\n\n{columns_descriptions}\n#\nQ: {question}\nHint: {hint}\nSchema links: {schema_links}\nA: Let’s think step by step.",
+    "SYSTEM_EASY_CLASS_TEMPLATE": "Use the schema links to generate the correct DuckDB SQL query for the given question.\nHint helps you to write the correct DuckDB SQL query.",
+    "HUMAN_EASY_CLASS_TEMPLATE": "Use the schema links to generate the correct DuckDB SQL query for the given question.\nHint helps you to write the correct DuckDB SQL query.\n###\nDatabase schema:\n#\n{schema}\n\n{columns_descriptions}\n#\nQ: {question}\nHint: {hint}\nSchema_links: {schema_links}\nSQL:",
+    "SYSTEM_NON_NESTED_CLASS_TEMPLATE": "Use the the schema links and intermediate reasoning steps to generate the correct DuckDB SQL query for the given question.\nHint helps you to write the correct DuckDB SQL query.",
+    "HUMAN_NON_NESTED_CLASS_TEMPLATE": "Use the the schema links and intermediate reasoning steps to generate the correct DuckDB SQL query for the given question.\nHint helps you to write the correct DuckDB SQL query.\n###\nDatabase schema:\n#\n{schema}\n\n{columns_descriptions}\n#\nQ: {question}\nHint: {hint}\nSchema_links: {schema_links}\nA: Let’s think step by step.",
+    "SYSTEM_NESTED_CLASS_TEMPLATE": "Use the the schema links and intermediate reasoning steps to generate the correct DuckDB SQL query for the given question.\nHint helps you to write the correct DuckDB SQL query.",
+    "HUMAN_NESTED_CLASS_TEMPLATE": "Use the the schema links and intermediate reasoning steps to generate the correct DuckDB SQL query for the given question.\nHint helps you to write the correct DuckDB SQL query.\n###\nDatabase schema:\n#\n{schema}\n\n{columns_descriptions}\n#\nQ: {question}\nHint: {hint}\nSchema_links: {schema_links}\nA: Let's think step by step. the given question can be solved by knowing the answer to the following sub-questions = {sub_questions}",
+    "SYSTEM_SELF_CORRECTION_PROMPT": "For the given question, use the provided tables, columns, foreign keys, and primary keys to fix the given DuckDB SQL QUERY for any issues. If there are any problems, fix them. If there are no issues, return the DuckDB SQL QUERY as is.\nHint helps you to write the correct DuckDB SQL query.\nUse the following instructions for fixing the DuckDB SQL query:\n1) Avoid redundant columns in SELECT clause, all of the columns should be mentioned in the question.\n2) Pay attention to the columns that are used for the JOIN by checking the Foreign keys.\n3) Pay attention to the columns that are used for the WHERE statement.\n4) Pay attention to the columns that are used for the GROUP BY statement.\n5) Pay attention to the columns that are used for the ORDER BY statement.\n6) check that all of the columns exist in the table and there are no typos.\n7) Use CAST when is needed.\n8) USE CASE WHEN is needed.",
+    "HUMAN_SELF_CORRECTION_PROMPT": "Evaluate the correctness of this query for the given question.\nHint helps you to write the correct SQL query.\nCorrect it if there are any issues. If there are no issues, return the DuckDB SQL QUERY as is.\nDatabase schema:\n#\n{schema}\n\n{columns_descriptions}\n#\nQ: {question}\nHint: {hint}\nSQL: {sql_query}\nA: Let's think step by step to find the correct answer."
+  }
+}
