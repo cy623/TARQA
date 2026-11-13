@@ -1,9 +1,3 @@
-"""Unified frozen TARQA inference from existing component checkpoints.
-
-One TSG chooses the track and prediction type. The same loaded base model,
-with its LoRA adapter temporarily disabled, generates SQL. No label or expected
-task type is an argument to answer().
-"""
 from __future__ import annotations
 
 from copy import deepcopy
@@ -22,7 +16,7 @@ from tarqa.utils.io import read_json
 class _SharedBaseChat:
     def __init__(self, generator, config):
         import torch
-        from tarqa_baselines.reasoning_llm import LocalChatModel
+        from tarqa.reasoning.llm import LocalChatModel
         self._client=LocalChatModel.__new__(LocalChatModel)
         self._client.torch=torch
         self._client.config=dict(config)
@@ -42,17 +36,17 @@ class _SQLModel:
         self.trace_root=Path(trace_root)
         self.last_details=None
         if backend=='din_sql':
-            from tarqa_baselines.tsg_din_sql import ArchivedDemoBank,TSGDINSQLEngine
+            from tarqa.reasoning.din_sql_context import ArchivedDemoBank,ContextDINSQLEngine
             rows=read_json(demonstration_bank)
             if isinstance(rows,dict):rows=rows['examples']
-            self.engine=TSGDINSQLEngine(client,ArchivedDemoBank(rows,num_examples=num_examples),
-                trace_root=self.trace_root,mode='local_schema')
+            self.engine=ContextDINSQLEngine(client,ArchivedDemoBank(rows,num_examples=num_examples),
+                trace_root=self.trace_root)
         elif backend!='direct':raise ValueError(f'Unknown SQL backend: {backend}')
 
     def generate(self, question, schema_text, *, error=None, sql=None):
         if error or sql:raise ValueError('The saved paired executor uses zero execution-feedback repairs')
         if self.backend=='direct':
-            from tarqa_baselines.reasoning_llm import direct_generate
+            from tarqa.reasoning.llm import direct_generate
             result,self.last_details=direct_generate(self.client,question,schema_text)
             return result
         if self.spec is None:raise ValueError('The generated Task Spec must precede SQL generation')
@@ -103,7 +97,7 @@ class TARQAModel:
         return p.resolve() if p.is_absolute() else (self.config_directory/p).resolve()
 
     def _build_pipeline(self,metadata):
-        from tarqa_baselines.export import schema_ddl
+        from tarqa.reasoning.schema import schema_ddl
         sql_config=self.config.get('sql_generation',dict(dtype='bfloat16',load_in_4bit=True,
             max_input_tokens=16384,max_new_tokens=1024,num_beams=1))
         client=_SharedBaseChat(self.generator,sql_config)
